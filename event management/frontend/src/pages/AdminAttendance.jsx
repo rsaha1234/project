@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { QrReader } from "react-qr-reader";
+import { Scanner } from "@yudiel/react-qr-scanner";
 import api from "../api/client";
 
 export default function AdminAttendance() {
@@ -29,23 +29,20 @@ export default function AdminAttendance() {
     <div style={{ padding: 20 }}>
       <h2>QR Attendance Scanner</h2>
 
-      <QrReader
-  constraints={{
-    facingMode: "user"
-  }}
-  scanDelay={500}
-  onResult={(result, error) => {
-    if (result?.text) {
-      handleScan(result.text);
-    }
-
-    if (error) {
-      console.log(error);
+      <Scanner
+  onScan={(detectedCodes) => {
+    if (detectedCodes?.length > 0) {
+      handleScan(detectedCodes[0].rawValue);
     }
   }}
-  containerStyle={{
-    width: "100%",
-    maxWidth: "600px",
+  onError={(error) => {
+    console.error(error);
+  }}
+  styles={{
+    container: {
+      width: "100%",
+      maxWidth: "600px",
+    },
   }}
 />
 
