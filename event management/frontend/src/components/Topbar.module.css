@@ -1,0 +1,47 @@
+/* frontend/src/components/Topbar.module.css */
+.topbar {
+  height: 64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 1.25rem;
+  background: #fff;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.pageTitle {
+  font-weight:600;
+  font-size:1.05rem;
+}
+
+.right {
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+
+.userInfo { display:flex; align-items:center; gap:0.6rem; }
+
+.avatar {
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  background: var(--primary);
+  font-weight:700;
+}
+
+.userName { font-weight:600; }
+.userRole { font-size:0.8rem; color: var(--muted); }
+
+.logoutBtn {
+  border:none;
+  background: var(--danger);
+  color:white;
+  padding:0.45rem 0.85rem;
+  border-radius:999px;
+  cursor:pointer;
+}

@@ -1,0 +1,40 @@
+/* frontend/src/styles/layout.module.css */
+:root{
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --danger: #ef4444;
+  --sidebar-bg: #0f1724;
+  --sidebar-contrast: #111827;
+}
+
+* { box-sizing: border-box; }
+html,body,#root { height:100%; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: var(--bg); color: #111827; }
+
+.centerPage{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--bg);
+  padding: 2rem;
+}
+
+.layout {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 64px);
+}
+
+/* Sidebar column + main content */
+.content {
+  flex: 1;
+  padding: 1.25rem 1.75rem;
+}
+
+/* small util */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
