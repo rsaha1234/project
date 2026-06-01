@@ -72,12 +72,12 @@ export default function Announcements() {
               </div>
               <div className={styles.annRight}>
                 {a.event_title && <div className={styles.badge}>Event: {a.event_title}</div>}
-                <button
+                {/* <button
                   className={styles.readBtn}
                   onClick={() => alert("Marked as read (UI only)")}
                 >
                   Mark read
-                </button>
+                </button> */}
               </div>
             </article>
           ))
