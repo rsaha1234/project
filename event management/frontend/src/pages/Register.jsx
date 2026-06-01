@@ -19,38 +19,71 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  const handleChange = (e) => {
+  setForm({
+    ...form,
+    [e.target.name]: e.target.value,
+  });
+};
 
-    try {
-      // call backend register via AuthContext
-      const res = await register({
-         name: form.name,
-        email: form.email,
-        password: form.password,
-        roll_number: form.roll_number,
-        department: form.department,
-      });
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-      // ✅ if AuthContext.register returns backend data
-      if (res?.ok) {
-        navigate("/login");
-      } else {
-        setError(res?.message || "Registration failed. Use a unique email.");
-      }
-    } catch (err) {
-      console.error("Register submit error:", err);
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Registration failed. Use a unique email.";
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
+  setError("");
+  setLoading(true);
+
+  const deptCodes = {
+    "Electronics and Communication Engineering": "ECE",
+    "Computer Science and Engineering": "CSE",
+    "Information Technology": "IT",
+    "Electrical Engineering": "EE",
+    "Mechanical Engineering": "ME",
+    "Civil Engineering": "CE",
   };
+
+  const expectedCode = deptCodes[form.department];
+
+  const rollRegex = new RegExp(
+    `^\\d{2}\\/${expectedCode}\\/\\d+$`
+  );
+
+  if (!rollRegex.test(form.roll_number)) {
+    setError(
+      `Roll Number must be in format: 22/${expectedCode}/001`
+    );
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const res = await register({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      roll_number: form.roll_number,
+      department: form.department,
+    });
+
+    if (res?.ok) {
+      navigate("/login");
+    } else {
+      setError(
+        res?.message ||
+          "Registration failed. Use a unique email."
+      );
+    }
+  } catch (err) {
+    console.error(err);
+
+    setError(
+      err?.response?.data?.message ||
+        err?.message ||
+        "Registration failed."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className={styles.wrapper}>
@@ -87,35 +120,62 @@ export default function Register() {
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
           />
-               <label>Roll Number</label>
+             <label>Roll Number</label>
 
-          <input
-            type="text"
-            placeholder="Enter Roll Number"
-            value={form.roll_number}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                roll_number: e.target.value,
-              })
-            }
-            required
+           <input
+             type="text"
+             name="roll_number"
+             placeholder="22/ECE/001"
+             value={form.roll_number}
+             onChange={handleChange}
+             required
           />
+
+<small
+  style={{
+    color: "#666",
+    marginTop: "-8px",
+    marginBottom: "10px",
+  }}
+>Format: 22/DEPT_CODE/001 (e.g. 22/ECE/001)
+</small>
 
           <label>Department</label>
 
-          <input
-            type="text"
-            placeholder="Enter Department"
-            value={form.department}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                department: e.target.value,
-              })
-            }
-            required
-          />
+<select
+  name="department"
+  value={form.department}
+  onChange={handleChange}
+  required
+>
+  <option value="">
+    Select Department
+  </option>
+
+  <option value="Electronics and Communication Engineering">
+    Electronics and Communication Engineering
+  </option>
+
+  <option value="Computer Science and Engineering">
+    Computer Science and Engineering
+  </option>
+
+  <option value="Information Technology">
+    Information Technology
+  </option>
+
+  <option value="Electrical Engineering">
+    Electrical Engineering
+  </option>
+
+  <option value="Mechanical Engineering">
+    Mechanical Engineering
+  </option>
+
+  <option value="Civil Engineering">
+    Civil Engineering
+  </option>
+</select>
           <button type="submit" className={styles.btnPrimary} disabled={loading}>
             {loading ? "Registering..." : "Register"}
           </button>
